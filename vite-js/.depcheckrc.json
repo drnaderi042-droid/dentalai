@@ -1,0 +1,25 @@
+{
+  "ignoreMatches": [
+    "@types/*",
+    "eslint-config-*",
+    "eslint-plugin-*",
+    "vite-plugin-*",
+    "@vitejs/*"
+  ],
+  "ignorePatterns": [
+    "*.test.js",
+    "*.spec.js",
+    "*.config.js",
+    "*.config.mjs"
+  ]
+}
+
+
+
+
+
+
+
+
+
+

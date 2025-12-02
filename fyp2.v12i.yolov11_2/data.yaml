@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../test/images
+test: ../test/images
+
+nc: 18
+names: ['canine class I', 'canine class II 1/2', 'canine class II 1/4', 'canine class II 3/4', 'canine class II full class', 'canine class III 1/2', 'canine class III 1/4', 'canine class III-3/4', 'canine class III full class', 'molar class I', 'molar class II 1/2', 'molar class II 1/4', 'molar class II 3/4', 'molar class II full class', 'molar class III 1/2', 'molar class III 1/4', 'molar class III 3/4', 'molar class III full class']
+
+roboflow:
+  workspace: testaugmentation-tvoc9
+  project: fyp2-i8jk7
+  version: 12
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/testaugmentation-tvoc9/fyp2-i8jk7/dataset/12

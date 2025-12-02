@@ -1,0 +1,15 @@
+{
+  "image_id": "cks2ip8fq29yq0yufc4scftj8",
+  "without_tta": {
+    "mre_mm": 1.2210398147806856,
+    "sdr_2mm": 86.20689655172413
+  },
+  "with_tta": {
+    "mre_mm": 1.1277666126304766,
+    "sdr_2mm": 89.65517241379311
+  },
+  "improvement": {
+    "mre_reduction": 0.09327320215020896,
+    "sdr_increase": 3.448275862068982
+  }
+}

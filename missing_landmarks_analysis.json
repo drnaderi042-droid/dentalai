@@ -1,0 +1,68 @@
+{
+  "aariz_landmarks": [
+    "A",
+    "ANS",
+    "B",
+    "Me",
+    "N",
+    "Or",
+    "Pog",
+    "PNS",
+    "Pn",
+    "R",
+    "S",
+    "Ar",
+    "Co",
+    "Gn",
+    "Go",
+    "Po",
+    "LPM",
+    "LIT",
+    "LMT",
+    "UPM",
+    "UIA",
+    "UIT",
+    "UMT",
+    "LIA",
+    "Li",
+    "Ls",
+    "N`",
+    "Pog`",
+    "Sn"
+  ],
+  "missing_landmarks": [
+    "Ba",
+    "Pt"
+  ],
+  "can_be_approximated": {
+    "U1": [
+      "UIA",
+      "UIT",
+      "UMT"
+    ],
+    "L1": [
+      "LIA",
+      "LIT"
+    ],
+    "Na": "N",
+    "L6": [
+      "LPM"
+    ],
+    "U6": [
+      "UPM"
+    ]
+  },
+  "missing_by_analysis": {
+    "Steiner": [],
+    "Ricketts": [
+      "Ba",
+      "Pt"
+    ],
+    "McNamara": [],
+    "Wits": [],
+    "Tweed": [],
+    "Bjork": [],
+    "Jarabak": [],
+    "Sassouni": []
+  }
+}

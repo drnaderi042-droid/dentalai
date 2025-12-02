@@ -1,0 +1,354 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String
+  firstName   String
+  lastName    String
+  phone       String?
+  role        String   @default("PATIENT")
+  specialty   String?
+  licenseNumber String?
+  avatarUrl   String?
+  city        String?
+  province    String?
+  isVerified  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Settings fields
+  emailNotifications  Boolean  @default(true)
+  smsNotifications    Boolean  @default(false)
+  pushNotifications   Boolean  @default(true)
+  soundEnabled       Boolean  @default(true)
+  language            String   @default("fa")
+  facebookLink        String?
+  twitterLink         String?
+  linkedinLink        String?
+  instagramLink       String?
+
+  // Relations
+  patients        Patient[]
+  wallet          Wallet?
+  messages        Message[]      // Added for chat
+  chatParticipations ChatParticipant[] // Added for chat
+  calendarEvents  CalendarEvent[] // Added for calendar
+  aiModelTests    AIModelTest[] // Added for AI model testing
+  blockedUsers    BlockedUser[] @relation("UserBlocked") // Users blocked by this user
+  blockedBy       BlockedUser[] @relation("UserBlockedBy") // Users who blocked this user
+  reports         Report[] // Reports made by this user
+
+  @@map("users")
+}
+
+model Patient {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String
+  phone       String
+  age         Int
+  gender      String?
+  diagnosis   String
+  treatment   String
+  status      String   @default("PENDING")
+  notes       String?
+  specialty   String
+  doctorId    String
+  doctor      User     @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Treatment Date Fields
+  nextVisitTime      DateTime?
+  treatmentStartDate DateTime?
+
+  // AI Analysis Fields
+  softTissueAnalysis   String?
+  cephalometricAnalysis String?
+  cephalometricTableData String?  // JSON data for editable cephalometric table
+  cephalometricRawData String?    // JSON data for raw measurements
+  cephalometricLandmarks String?  // JSON data for landmark coordinates
+  intraOralAnalysis    String?    // JSON data for intra-oral analysis results
+  facialLandmarkAnalysis String?  // JSON data for facial landmark analysis results
+  superimposeSettings  String?    // JSON data for superimpose alignment settings
+  treatmentPlan        String?
+  summary              String?
+
+  // Periodontics Fields
+  medicalHistory       String?  // JSON data for systemic diseases
+
+  // Relations
+  radiologyImages RadiologyImage[]
+  periodontalCharts PeriodontalChart[]
+
+  @@map("patients")
+}
+
+model RadiologyImage {
+  id          String   @id @default(cuid())
+  filename    String
+  originalName String
+  mimeType    String
+  size        Int
+  path        String
+  category    String   @default("general") // profile, lateral, intraoral, general
+  type        String?  // frontal rest, frontal smile, lateral ceph, etc.
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  uploadedAt  DateTime @default(now())
+
+  @@map("radiology_images")
+}
+
+model Wallet {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  balance     Float    @default(0)
+  currency    String   @default("IRR")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  transactions Transaction[]
+
+  @@map("wallets")
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  walletId    String
+  wallet      Wallet   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  amount      Float
+  type        String
+  description String?
+  referenceId String?
+  createdAt   DateTime @default(now())
+
+  @@map("transactions")
+}
+
+model Invoice {
+  id            String   @id @default(cuid())
+  invoiceNumber String   @unique
+  status        String   @default("draft") // draft, pending, paid, cancelled, failed
+  totalAmount   Float
+  taxAmount     Float    @default(0)
+  discountAmount Float   @default(0)
+
+  // Payment Info
+  paymentGateway String? // zarinpal, nowpayments
+  paymentStatus  String  @default("pending") // pending, completed, failed
+  transactionId  String? // Reference from payment gateway
+  paidAt         DateTime?
+
+  // Dates
+  createDate    DateTime @default(now())
+  dueDate       DateTime?
+  sentDate      DateTime?
+
+  // User/Patient info
+  userId        String  // User who created the invoice
+  patientId     String?
+  
+  // Invoice details
+  title         String?
+  description   String?
+  type          String  @default("wallet_charge") // wallet_charge, treatment, consultation
+  currency      String  @default("IRR")
+
+  // Items (JSON for simplicity, can be expanded)
+  items         String   // JSON array of invoice items
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("invoices")
+}
+
+model ExchangeRate {
+  id          String   @id @default(cuid())
+  
+  // Exchange rates
+  usdToIrr    Float    // USD to IRR rate (Toman)
+  eurToIrr    Float?   // EUR to IRR rate (optional)
+  
+  // Source info
+  source      String   @default("bonbast") // bonbast, other sources
+  
+  // Timestamps
+  fetchedAt   DateTime @default(now())
+  expiresAt   DateTime // Rate expires after 6 hours
+  
+  createdAt   DateTime @default(now())
+  
+  @@map("exchange_rates")
+}
+
+model Chat {
+  id              String     @id @default(cuid())
+
+  // Relationships
+  participants    ChatParticipant[]
+  messages        Message[]
+
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@map("chats")
+}
+
+model ChatParticipant {
+  id              String     @id @default(cuid())
+  chatId          String
+  userId          String
+
+  // Relations
+  chat            Chat       @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime   @default(now())
+
+  @@unique([chatId, userId])
+
+  @@map("chat_participants")
+}
+
+model Message {
+  id              String     @id @default(cuid())
+  chatId          String
+
+  senderId        String
+  sender          User       @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  content         String
+  contentType     String     @default("text") // text, image, file
+  attachments     String?    // JSON array of attachment objects
+
+  read            Boolean    @default(false)
+  readAt          DateTime?
+
+  createdAt       DateTime   @default(now())
+
+  // Relations
+  chat            Chat       @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+model CalendarEvent {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  start       DateTime
+  end         DateTime
+  allDay      Boolean  @default(false)
+  color       String   @default("#00a76f") // Default green color
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("calendar_events")
+}
+
+model AIModelTest {
+  id              String   @id @default(cuid())
+  
+  // Model Info
+  modelId         String   // e.g. "anthropic/claude-3.5-sonnet"
+  modelName       String   // e.g. "Claude 3.5 Sonnet"
+  modelProvider   String   // e.g. "Anthropic"
+  
+  // Test Info
+  imageUrl        String?  // URL of the test image
+  imageSize       String?  // JSON: {width, height}
+  prompt          String   @default("")
+  
+  // Results
+  success         Boolean
+  landmarks       String?  // JSON: landmark coordinates
+  rawResponse     String?  // Raw AI response
+  error           String?  // Error message if failed
+  
+  // Metadata
+  processingTime  Float?   // Processing time in seconds
+  tokensUsed      String?  // JSON: token usage info
+  scalingInfo     String?  // JSON: scaling information
+  confidence      Float?   // Overall confidence score
+  
+  // User who ran the test
+  userId          String?
+  user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+
+  @@map("ai_model_tests")
+}
+
+model PeriodontalChart {
+  id          String   @id @default(cuid())
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  
+  date        DateTime @default(now())
+  teeth       String   // JSON data for all 32 teeth measurements
+  notes       String?
+  
+  // Calculated fields (for quick queries)
+  bopPercentage       Float?
+  avgPocketDepth      Float?
+  avgCAL              Float?
+  diseaseExtent       String?  // Localized/Generalized
+  diseaseSeverity     String?  // Stage I-IV
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("periodontal_charts")
+}
+
+model BlockedUser {
+  id              String   @id @default(cuid())
+  blockerId       String   // User who blocked
+  blockedId       String   // User who is blocked
+  
+  // Relations
+  blocker         User     @relation("UserBlocked", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked         User     @relation("UserBlockedBy", fields: [blockedId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime @default(now())
+  
+  @@unique([blockerId, blockedId])
+  @@map("blocked_users")
+}
+
+model Report {
+  id              String   @id @default(cuid())
+  reporterId      String   // User who made the report
+  reportedId      String   // User who is reported
+  reason          String   // Predefined reason or "other"
+  description     String?  // Additional description if reason is "other"
+  status          String   @default("pending") // pending, reviewed, resolved, dismissed
+  adminNotes      String?  // Notes from admin
+  
+  // Relations
+  reporter        User     @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("reports")
+}

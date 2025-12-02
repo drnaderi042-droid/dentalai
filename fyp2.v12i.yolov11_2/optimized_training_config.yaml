@@ -1,0 +1,80 @@
+# YOLOv11 Optimized Training Configuration
+# For Lateral Orthodontic AI - Class Imbalance Mitigation
+
+# Basic Training Parameters
+model: yolo11s.pt                    # Upgrade from nano to small for better capacity
+data: "LATERAL ORTHO AI.v2i.yolov11/data.yaml"
+epochs: 150
+patience: 20                         # Reduced from 100 for faster convergence
+batch: 16
+imgsz: 800                           # Increased for medical imaging detail
+
+# Learning Rate Schedule
+lr0: 0.005                           # Reduced from 0.01 for stable learning
+lrf: 0.01
+momentum: 0.95
+weight_decay: 0.001                  # Increased regularization
+
+# Warmup Configuration
+warmup_epochs: 5                     # Increased for better initialization
+warmup_momentum: 0.8
+warmup_bias_lr: 0.05                 # Reduced bias learning rate
+
+# Loss Function Weights
+box: 7.5
+cls: 2.0                             # Increased class loss weight for better classification
+dfl: 1.5
+
+# Data Augmentation (Optimized for Medical Imaging)
+hsv_h: 0.015                         # Hue variation
+hsv_s: 0.7                           # Saturation variation
+hsv_v: 0.4                           # Value/brightness variation
+degrees: 5.0                         # Small rotations allowed
+translate: 0.1                       # Translation augmentation
+scale: 0.2                           # Reduced scaling from 0.5 to 0.5 for medical stability
+shear: 0.0                           # No shear (can distort anatomy)
+perspective: 0.0                     # No perspective distortion
+flipud: 0.0                          # No vertical flip (unnatural for dental X-rays)
+fliplr: 0.3                          # Reduced from 0.5 to avoid over-augmentation
+mosaic: 1.0                          # Mosaic augmentation
+mixup: 0.1                           # Added mixup for regularization
+copy_paste: 0.1                      # Added copy-paste for minority classes
+auto_augment: randaugment            # Automatic augmentation
+
+# Additional Training Settings
+device: 0                            # GPU device
+workers: 8                           # Data loading workers
+verbose: true
+save: true
+save_period: 25                      # Save checkpoint every 25 epochs
+project: optimized_train
+name: run1
+exist_ok: false
+pretrained: true
+amp: true
+fraction: 1.0                        # Use all training data
+
+# Class Imbalance Mitigation
+# Note: These should be implemented as class weights in the loss function
+class_weights: {
+  'Spacing': 1.0,
+  'Proclination': 1.2,
+  'Class III': 1.5,
+  'Deep bite': 1.8,
+  'Rotation': 1.8,
+  'Class I': 2.0,
+  'Class II': 2.5,
+  'Cross bite': 3.0,
+  'Crowding': 3.5,
+  'Open bite': 4.0,
+  'Retroclination': 5.0
+}
+
+# Expected Performance Targets
+performance_targets: {
+  'mAP50_target': 0.60,              # Current: 0.428
+  'mAP50_95_target': 0.35,           # Current: 0.206
+  'min_class_mAP50': 0.25,           # All classes should achieve this
+  'min_class_recall': 0.40,          # All classes should achieve this
+  'min_class_precision': 0.35        # All classes should achieve this
+}

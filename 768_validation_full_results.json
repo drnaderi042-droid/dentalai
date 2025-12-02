@@ -1,0 +1,17 @@
+{
+  "checkpoint": "C:\\Users\\Salah\\Downloads\\Compressed\\Dentalai\\main - Copy\\Aariz\\checkpoint_best_768.pth",
+  "pixel_size": 0.1,
+  "num_images": 150,
+  "num_landmarks": 4350,
+  "mre_mm": 1.1181276210654603,
+  "std_mm": 1.4644808299599785,
+  "median_mm": 0.7440277520831915,
+  "min_mm": 0.008104034664644776,
+  "max_mm": 46.15682224613217,
+  "sdr": {
+    "2.0": 86.91954022988506,
+    "2.5": 91.816091954023,
+    "3.0": 94.50574712643677,
+    "4.0": 97.03448275862068
+  }
+}

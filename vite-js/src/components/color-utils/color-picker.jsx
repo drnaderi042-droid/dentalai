@@ -1,0 +1,116 @@
+import { useMemo, forwardRef, useCallback } from 'react';
+
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import ButtonBase from '@mui/material/ButtonBase';
+import { alpha as hexAlpha } from '@mui/material/styles';
+
+import { varAlpha } from 'src/theme/styles';
+
+import { Iconify } from '../iconify';
+
+// ----------------------------------------------------------------------
+
+export const ColorPicker = forwardRef(
+  ({ colors, selected, onSelectColor, limit = 'auto', sx, slotProps, ...other }, ref) => {
+    const singleSelect = typeof selected === 'string';
+
+    const safeSelected = useMemo(() => selected ?? (singleSelect ? '' : []), [
+      selected,
+      singleSelect,
+    ]);
+
+    const handleSelect = useCallback(
+      (color) => {
+        if (singleSelect) {
+          if (color !== safeSelected) {
+            onSelectColor(color);
+          }
+        } else {
+          const selectedArray = safeSelected || [];
+          const newSelected = selectedArray.includes(color)
+            ? selectedArray.filter((value) => value !== color)
+            : [...selectedArray, color];
+
+          onSelectColor(newSelected);
+        }
+      },
+      [onSelectColor, safeSelected, singleSelect]
+    );
+
+    return (
+      <Box
+        ref={ref}
+        component="ul"
+        sx={{
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+          display: 'inline-flex',
+          justifyContent: 'center', // وسط چین کردن دکمه‌های رنگ
+          ...(limit !== 'auto' && {
+            width: limit * 36,
+          }),
+          ...sx,
+        }}
+        {...other}
+      >
+        {colors.map((color) => {
+          const hasSelected = singleSelect 
+            ? (safeSelected === color) 
+            : (Array.isArray(safeSelected) && safeSelected.includes(color));
+
+          return (
+            <Box component="li" key={color} sx={{ display: 'inline-flex' }}>
+              <ButtonBase
+                aria-label={color}
+                onClick={() => handleSelect(color)}
+                sx={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: '50%',
+                  ...slotProps?.button,
+                }}
+              >
+                <Stack
+                  alignItems="center"
+                  justifyContent="center"
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    bgcolor: color,
+                    borderRadius: '50%',
+                    border: (theme) =>
+                      `solid 1px ${varAlpha(theme.vars.palette.grey['500Channel'], 0.16)}`,
+                    ...(hasSelected && {
+                      transform: 'scale(1.3)',
+                      boxShadow: `4px 4px 8px 0 ${hexAlpha(color, 0.48)}`,
+                      outline: `solid 2px ${hexAlpha(color, 0.08)}`,
+                      transition: (theme) =>
+                        theme.transitions.create('all', {
+                          duration: theme.transitions.duration.shortest,
+                        }),
+                    }),
+                  }}
+                >
+                  <Iconify
+                    width={hasSelected ? 12 : 0}
+                    icon="eva:checkmark-fill"
+                    sx={{
+                      color: (theme) => theme.palette.getContrastText(color),
+                      transition: (theme) =>
+                        theme.transitions.create('all', {
+                          duration: theme.transitions.duration.shortest,
+                        }),
+                    }}
+                  />
+                </Stack>
+              </ButtonBase>
+            </Box>
+          );
+        })}
+      </Box>
+    );
+  }
+);
+
+ColorPicker.displayName = 'ColorPicker';

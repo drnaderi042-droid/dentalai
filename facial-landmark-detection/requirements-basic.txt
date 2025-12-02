@@ -1,0 +1,14 @@
+# برای Python 3.8 - نسخه‌های سازگار
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+opencv-python==4.8.1.78
+numpy>=1.24.4
+Pillow==10.1.0
+
+# به‌روزرسانی typing_extensions برای Python 3.8
+typing-extensions>=4.8.0
+
+# MediaPipe (468 points) - مدل پیش‌فرض و ساده
+mediapipe==0.10.8
+

@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "mean_error": 1089.3229344322488,
+  "std_error": 85.938029902457,
+  "median_error": 1109.5482277834865,
+  "max_error": 1206.5869456759444,
+  "min_error": 969.8007073574648,
+  "mean_p1_error": 1540.8582971130065,
+  "mean_p2_error": 637.7875717514911,
+  "successful_tests": 10,
+  "failed_tests": 0,
+  "errors_under_2px": 0,
+  "errors_under_10px": 0,
+  "errors_over_10px": 10
+}

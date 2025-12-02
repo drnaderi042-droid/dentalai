@@ -1,0 +1,62 @@
+# Unified AI API Server Requirements
+
+# Core API Framework
+flask>=2.0.0,<2.3.0
+flask-cors>=4.0.0
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+
+# Image Processing
+opencv-python>=4.8.0
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# Intra-Oral Analysis (YOLO)
+ultralytics>=8.0.0
+
+# Facial Landmark Detection
+# Choose one or more:
+mediapipe>=0.10.0
+# dlib>=19.24.0  # Requires special installation
+# face-alignment>=1.3.5  # Requires special installation
+# retina-face>=0.0.15  # Requires special installation
+
+# Advanced Facial Landmark Detection
+# LAB (Look at Boundary) - High accuracy for anatomical landmarks
+# Note: LAB requires PyTorch and additional dependencies
+# Installation: pip install torch torchvision scipy scikit-image
+# Then clone: git clone https://github.com/wywu/LAB.git
+
+# 3DDFA (3D Dense Face Alignment) - 3D landmarks
+# Note: 3DDFA requires face3d library
+# Installation: pip install face3d
+# Or: pip install git+https://github.com/cleardusk/3DDFA.git
+torch>=1.9.0
+torchvision>=0.10.0
+scipy>=1.7.0
+scikit-image>=0.18.0
+
+# Cephalometric Analysis
+# HRNet and Aariz models require their own dependencies
+# Please refer to their respective documentation
+
+# CLdetection2023 Model Requirements
+# Note: CLdetection2023 requires MMPose framework
+# Installation steps:
+# 1. pip install -U openmim
+# 2. cd CLdetection2023/mmpose_package/mmpose
+# 3. pip install -e .
+# 4. mim install mmengine
+# 5. mim install "mmcv>=2.0.0"
+# 6. pip install --upgrade numpy
+
+# OpenMMLab tools for MMPose installation
+openmim
+mmengine>=0.6.0,<1.0.0
+mmcv>=2.0.0rc4,<=2.1.0
+
+# Additional utilities
+python-dateutil>=2.8.2
+
+

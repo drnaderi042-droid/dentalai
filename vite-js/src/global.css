@@ -1,0 +1,339 @@
+/** **************************************
+* Fonts: app
+*************************************** */
+@import '@fontsource/public-sans/400.css';
+@import '@fontsource/public-sans/500.css';
+@import '@fontsource/public-sans/600.css';
+@import '@fontsource/public-sans/700.css';
+@import '@fontsource/public-sans/800.css';
+
+@import '@fontsource/barlow/400.css';
+@import '@fontsource/barlow/500.css';
+@import '@fontsource/barlow/600.css';
+@import '@fontsource/barlow/700.css';
+@import '@fontsource/barlow/800.css';
+
+/** **************************************
+* Fonts: options
+*************************************** */
+@import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/500.css';
+@import '@fontsource/dm-sans/600.css';
+@import '@fontsource/dm-sans/700.css';
+@import '@fontsource/dm-sans/800.css';
+
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/inter/800.css';
+
+@import '@fontsource/nunito-sans/400.css';
+@import '@fontsource/nunito-sans/500.css';
+@import '@fontsource/nunito-sans/600.css';
+@import '@fontsource/nunito-sans/700.css';
+@import '@fontsource/nunito-sans/800.css';
+
+/* scrollbar */
+@import './components/scrollbar/styles.css';
+
+/* image */
+@import './components/image/styles.css';
+
+/* map */
+@import './components/map/styles.css';
+
+/* lightbox */
+@import './components/lightbox/styles.css';
+
+/* chart */
+@import './components/chart/styles.css';
+
+/* Yekan Bakh Font - Fixed Path */
+@font-face {
+  font-family: 'Yekan Bakh';
+  src: url('/fonts/YekanBakhFaNum-Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Yekan Bakh';
+  src: url('/fonts/YekanBakhFaNum-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Yekan Bakh';
+  src: url('/fonts/YekanBakhFaNum-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Yekan Bakh';
+  src: url('/fonts/YekanBakhFaNum-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Yekan Bakh';
+  src: url('/fonts/YekanBakhFaNum-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Yekan Bakh';
+  src: url('/fonts/YekanBakhFaNum-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Yekan Bakh';
+  src: url('/fonts/YekanBakhFaNum-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Yekan Bakh';
+  src: url('/fonts/YekanBakhFaNum-ExtraBlack.woff2') format('woff2');
+  font-weight: 950;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Dana Font */
+@font-face {
+  font-family: 'Dana';
+  src: url('/fonts/Dana/Dana-Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dana';
+  src: url('/fonts/Dana/Dana-UltraLight.woff2') format('woff2');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dana';
+  src: url('/fonts/Dana/Dana-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dana';
+  src: url('/fonts/Dana/Dana-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dana';
+  src: url('/fonts/Dana/Dana-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dana';
+  src: url('/fonts/Dana/Dana-DemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dana';
+  src: url('/fonts/Dana/Dana-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dana';
+  src: url('/fonts/Dana/Dana-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dana';
+  src: url('/fonts/Dana/Dana-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Dana';
+  src: url('/fonts/Dana/Dana-ExtraBlack.woff2') format('woff2');
+  font-weight: 950;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Kalameh Font */
+@font-face {
+  font-family: 'Kalameh';
+  src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Kalameh';
+  src: url('/fonts/Kalameh/KalamehWeb(FaNum)-ExtraLight.woff2') format('woff2');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Kalameh';
+  src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Kalameh';
+  src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Kalameh';
+  src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Kalameh';
+  src: url('/fonts/Kalameh/KalamehWeb(FaNum)-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Kalameh';
+  src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Kalameh';
+  src: url('/fonts/Kalameh/KalamehWeb(FaNum)-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Kalameh';
+  src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/** **************************************
+* Baseline
+*************************************** */
+html {
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+body,
+#root,
+#root__layout {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 100%;
+  flex-direction: column;
+  background-color: #f2f6ff;
+}
+
+/* Dark mode background color for body, #root, #root__layout */
+/* Using multiple selectors to cover all Material-UI dark mode implementations */
+[data-theme="dark"] body,
+[data-theme="dark"] #root,
+[data-theme="dark"] #root__layout,
+html[data-theme="dark"] body,
+html[data-theme="dark"] #root,
+html[data-theme="dark"] #root__layout,
+body[data-theme="dark"],
+#root[data-theme="dark"],
+#root__layout[data-theme="dark"],
+[data-mui-color-scheme="dark"] body,
+[data-mui-color-scheme="dark"] #root,
+[data-mui-color-scheme="dark"] #root__layout,
+html[data-mui-color-scheme="dark"] body,
+html[data-mui-color-scheme="dark"] #root,
+html[data-mui-color-scheme="dark"] #root__layout,
+.Mui-dark body,
+.Mui-dark #root,
+.Mui-dark #root__layout {
+  background-color: #282b33 !important;
+}
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+input[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+input[type='number']::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+/* Apply default font globally - will be overridden by theme settings */
+* {
+  font-family: 'Yekan Bakh', sans-serif !important;
+}
+
+/* Override Barlow font with default font */
+*[style*="Barlow"],
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Yekan Bakh', sans-serif !important;
+}
+
+/* Force Persian digits for all numbers */
+body,
+#root,
+#root__layout,
+* {
+  font-variant-numeric: persian;
+  -webkit-font-feature-settings: 'tnum' 0;
+  font-feature-settings: 'tnum' 0;
+}
+
+/* Add margin between MuiPaper components */
+.MuiPaper-root + .MuiPaper-root {
+  margin-top: 16px !important;
+}
+
+/* Rotate arrow icons 180 degrees for RTL support */
+/* Using :has() selector for modern browsers - fallback handled in components */
+svg.MuiSvgIcon-root:has(path[d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64"]),
+.MuiSvgIcon-root:has(path[d="M13.83 19a1 1 0 0 1-.78-.37l-4.83-6a1 1 0 0 1 0-1.27l5-6a1 1 0 0 1 1.54 1.28L10.29 12l4.32 5.36a1 1 0 0 1-.78 1.64"]) {
+  transform: rotate(180deg) !important;
+}

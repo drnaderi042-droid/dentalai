@@ -1,0 +1,87 @@
+# Development overrides for DentalAI
+# This file is automatically merged with docker-compose.yml in development
+
+version: '3.8'
+
+services:
+  # Development database with persistent data
+  postgres:
+    ports:
+      - "5432:5432"  # Expose for external access during development
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./dev-init.sql:/docker-entrypoint-initdb.d/dev-init.sql
+
+  # Development AI API with hot reload
+  ai-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+      target: development
+    volumes:
+      - .:/app
+      - /app/__pycache__
+    environment:
+      - FLASK_ENV=development
+      - PYTHONPATH=/app
+    ports:
+      - "8000:8000"
+      - "5678:5678"  # Debug port
+
+  # Development API with hot reload
+  api:
+    build:
+      context: ./minimal-api-dev-v6
+      dockerfile: ../Dockerfile.api
+      target: development
+    volumes:
+      - ./minimal-api-dev-v6:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    ports:
+      - "7272:7272"
+      - "9230:9230"  # Debug port
+    command: npm run dev
+
+  # Development Frontend with hot reload
+  frontend:
+    build:
+      context: ./vite-js
+      dockerfile: ../Dockerfile.frontend
+      target: development
+    volumes:
+      - ./vite-js:/app
+      - /app/node_modules
+      - /app/dist
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3030:3030"
+    command: npm run dev -- --host 0.0.0.0
+
+  # Development Dashboard with hot reload
+  dashboard:
+    build:
+      context: ./next-js
+      dockerfile: ../Dockerfile.dashboard
+      target: development
+    volumes:
+      - ./next-js:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+    command: npm run dev
+
+  # Development nginx with live reload
+  nginx:
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+      - "443:443"

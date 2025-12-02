@@ -1,0 +1,222 @@
+#!/usr/bin/env python3
+"""
+Diagnostic script to test P1/P2 model with both CORRECT (1024, 256) and WRONG (768, 192) parameters
+to identify if the unified API server is using wrong parameters.
+"""
+
+import os
+import sys
+import numpy as np
+import torch
+import torchvision.transforms as transforms
+from PIL import Image
+import io
+import base64
+import json
+
+def load_test_image():
+    """Load a test lateral cephalometric image"""
+    # Try to find any test image in the project
+    test_image_paths = [
+        'cephx_service/lateral.jpg',
+        'my_images/lateral.jpg', 
+        'test_images/lateral.jpg',
+        'aariz/test_images/lateral.jpg'
+    ]
+    
+    for path in test_image_paths:
+        if os.path.exists(path):
+            print(f"✅ Found test image: {path}")
+            return Image.open(path).convert('RGB')
+    
+    # Create a dummy test image if no real image found
+    print("⚠️  No real test image found, creating dummy image")
+    dummy_image = Image.new('RGB', (1024, 1024), color='white')
+    # Add some black rectangles to simulate landmarks
+    import numpy as np
+    img_array = np.array(dummy_image)
+    img_array[800:810, 500:510] = 0  # P1 location (bottom)
+    img_array[200:210, 500:510] = 0  # P2 location (top)
+    dummy_image = Image.fromarray(img_array)
+    return dummy_image
+
+def test_p1p2_with_parameters(image, image_size, heatmap_size, label):
+    """Test P1/P2 detection with specific parameters"""
+    print(f"\n{'='*60}")
+    print(f"Testing with {label} parameters: image_size={image_size}, heatmap_size={heatmap_size}")
+    print(f"{'='*60}")
+    
+    try:
+        # Add Aariz directory to path
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        aariz_dir = os.path.join(base_dir, 'Aariz')
+        if os.path.exists(aariz_dir) and aariz_dir not in sys.path:
+            sys.path.insert(0, aariz_dir)
+        
+        # Import model
+        from model_heatmap import HRNetP1P2HeatmapDetector
+        
+        # Load model
+        model_path_candidates = [
+            os.path.join(base_dir, 'Aariz', 'models', 'hrnet_p1p2_heatmap_best.pth'),
+            os.path.join(base_dir, 'aariz', 'models', 'hrnet_p1p2_heatmap_best.pth'),
+        ]
+        
+        model_path = None
+        for candidate in model_path_candidates:
+            if os.path.exists(candidate):
+                model_path = candidate
+                break
+        
+        if not model_path:
+            print(f"❌ Model not found")
+            return None
+        
+        print(f"📦 Loading model from: {model_path}")
+        
+        # Load checkpoint
+        device = 'cpu'
+        checkpoint = torch.load(model_path, map_location=device, weights_only=False)
+        
+        # Use test parameters instead of checkpoint parameters
+        test_image_size = image_size
+        test_heatmap_size = heatmap_size
+        print(f"🔧 Using TEST parameters: image_size={test_image_size}, heatmap_size={test_heatmap_size}")
+        
+        # Load state dict
+        state_dict = checkpoint.get('model_state_dict', checkpoint)
+        
+        # Create model with test parameters
+        model = HRNetP1P2HeatmapDetector(
+            num_landmarks=2,
+            hrnet_variant='hrnet_w18',
+            pretrained=False,
+            output_size=test_heatmap_size
+        )
+        
+        # Load state dict
+        model.load_state_dict(state_dict, strict=False)
+        model = model.to(device)
+        model.eval()
+        
+        # Preprocess image with test parameters
+        transform = transforms.Compose([
+            transforms.Resize((test_image_size, test_image_size)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        ])
+        
+        orig_width, orig_height = image.size
+        image_tensor = transform(image).unsqueeze(0).to(device)
+        
+        # Run inference
+        with torch.no_grad():
+            heatmaps = model(image_tensor)
+            
+            # Extract coordinates
+            if hasattr(model, 'extract_coordinates'):
+                coords = model.extract_coordinates(heatmaps)
+            else:
+                # Manual soft-argmax
+                batch_size, num_landmarks, H, W = heatmaps.shape
+                y_coords = torch.arange(H, dtype=heatmaps.dtype, device=heatmaps.device).view(1, 1, H, 1)
+                x_coords = torch.arange(W, dtype=heatmaps.dtype, device=heatmaps.device).view(1, 1, 1, W)
+                
+                y_coords = y_coords / (H - 1) if H > 1 else y_coords
+                x_coords = x_coords / (W - 1) if W > 1 else x_coords
+                
+                heatmaps_sum = heatmaps.sum(dim=(2, 3), keepdim=True) + 1e-8
+                x_mean = (heatmaps * x_coords).sum(dim=(2, 3)) / heatmaps_sum.squeeze()
+                y_mean = (heatmaps * y_coords).sum(dim=(2, 3)) / heatmaps_sum.squeeze()
+                
+                coords = torch.stack([x_mean, y_mean], dim=-1)
+                coords = coords.view(batch_size, num_landmarks * 2)
+        
+        # Convert to pixel coordinates
+        coords_normalized = coords.cpu().numpy()[0]
+        
+        # Test the TRANSFORMATION that unified_ai_api_server.py uses
+        # This should be the problematic line
+        print(f"🔍 Raw model output (normalized): p1=({coords_normalized[0]:.4f}, {coords_normalized[1]:.4f}), p2=({coords_normalized[2]:.4f}, {coords_normalized[3]:.4f})")
+        
+        # Apply the transformation from unified_ai_api_server.py
+        x0 = coords_normalized[0] * orig_width
+        y0 = coords_normalized[1] * orig_height  
+        x1 = coords_normalized[2] * orig_width
+        y1 = coords_normalized[3] * orig_height
+        
+        print(f"📍 Transformed coordinates (orig image {orig_width}x{orig_height}): p1=({x0:.1f}, {y0:.1f}), p2=({x1:.1f}, {y1:.1f})")
+        
+        # Check if coordinates are in reasonable range
+        max_coord = max(x0, y0, x1, y1)
+        print(f"📊 Max coordinate: {max_coord:.1f}px (should be around {max(orig_width, orig_height)} for full image)")
+        
+        if max_coord > orig_width * 1.5:
+            print(f"❌ ERROR: Coordinates are way too large! Something is wrong.")
+            return False
+        elif max_coord < orig_width * 0.1:
+            print(f"❌ ERROR: Coordinates are way too small! Something is wrong.")
+            return False
+        else:
+            print(f"✅ Coordinates seem reasonable")
+            return True
+            
+    except Exception as e:
+        print(f"❌ Error testing {label}: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+
+def test_unified_api_server_logic(image):
+    """Test the exact logic from unified_ai_api_server.py"""
+    print(f"\n{'='*80}")
+    print("Testing UNIFIED API SERVER logic")
+    print(f"{'='*80}")
+    
+    # Test what unified_ai_api_server.py does
+    # It should use p1p2_image_size=1024, p1p2_heatmap_size=256
+    
+    print("📋 This test simulates what unified_ai_api_server.py should be doing:")
+    print("   1. Load model with p1p2_image_size=1024, p1p2_heatmap_size=256")
+    print("   2. Resize image to 1024x1024")
+    print("   3. Model predicts coordinates in [0,1] relative to resized image")
+    print("   4. Scale back to original image coordinates")
+    
+    success = test_p1p2_with_parameters(image, 1024, 256, "CORRECT")
+    return success
+
+def main():
+    print("🔍 P1/P2 Parameter Diagnosis for Unified API Server")
+    print("This script tests if the unified API server is using correct parameters")
+    
+    # Load test image
+    image = load_test_image()
+    print(f"📷 Test image size: {image.size}")
+    
+    # Test unified API server logic
+    success = test_unified_api_server_logic(image)
+    
+    print(f"\n{'='*80}")
+    print("DIAGNOSIS SUMMARY")
+    print(f"{'='*80}")
+    
+    if success:
+        print("✅ CORRECT parameters (1024, 256) work correctly")
+        print("🔧 If the unified API server is still producing >100px errors,")
+        print("   then the issue is NOT in the coordinate transformation logic.")
+        print("   The issue might be:")
+        print("   1. Wrong model file being loaded")
+        print("   2. Model checkpoint having wrong metadata")
+        print("   3. Image preprocessing differences")
+        print("   4. Coordinate interpretation differences")
+    else:
+        print("❌ CORRECT parameters (1024, 256) are NOT working!")
+        print("🚨 This suggests a fundamental issue with the model or inference logic.")
+    
+    print(f"\n📝 Next steps:")
+    print(f"   1. Check if unified_ai_api_server.py is actually using the correct parameters")
+    print(f"   2. Verify the model checkpoint contains the right metadata")
+    print(f"   3. Add debug logging to unified_ai_api_server.py to see actual values")
+
+if __name__ == "__main__":
+    main()

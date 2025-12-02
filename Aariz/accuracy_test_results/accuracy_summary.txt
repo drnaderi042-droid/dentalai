@@ -1,0 +1,14 @@
+================================================================================
+P1/P2 HEATMAP MODEL ACCURACY TEST SUMMARY
+================================================================================
+
+Samples tested: 60
+Average error: 2.09 px
+Median error: 1.93 px
+Within 5px: 98.3%
+Within 10px: 98.3%
+Min error: 0.25 px
+Max error: 10.85 px
+
+Visualizations saved in this directory
+================================================================================

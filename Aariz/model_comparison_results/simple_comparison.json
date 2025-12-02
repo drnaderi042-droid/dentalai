@@ -1,0 +1,84 @@
+{
+  "comparison_info": {
+    "device": "cuda",
+    "batch_size": 4,
+    "image_size": "768x768",
+    "num_test_runs": 10
+  },
+  "models": {
+    "combined": {
+      "output_info": {
+        "model_name": "Combined Model",
+        "output_shape": [
+          1,
+          62
+        ],
+        "output_range": {
+          "min": NaN,
+          "max": NaN,
+          "mean": NaN,
+          "std": NaN
+        },
+        "num_landmarks": 31
+      },
+      "speed_info": {
+        "model_name": "Combined Model",
+        "avg_inference_time_ms": 30.37884831428528,
+        "std_inference_time_ms": 6.968346118927002,
+        "min_time_ms": 27.39536762237549,
+        "max_time_ms": 50.163090229034424,
+        "fps": 32.91764024937582
+      },
+      "file_size_mb": 57.54622459411621,
+      "landmarks": 31
+    },
+    "p1p2": {
+      "output_info": {
+        "model_name": "P1/P2 Model",
+        "output_shape": [
+          1,
+          4
+        ],
+        "output_range": {
+          "min": 0.0001411764824297279,
+          "max": 0.97886723279953,
+          "mean": 0.36370331048965454,
+          "std": 0.46386781334877014
+        },
+        "num_landmarks": 2
+      },
+      "speed_info": {
+        "model_name": "P1/P2 Model",
+        "avg_inference_time_ms": 22.939205169677734,
+        "std_inference_time_ms": 0.26751673221588135,
+        "min_time_ms": 22.52197265625,
+        "max_time_ms": 23.499786853790283,
+        "fps": 43.593489512960694
+      },
+      "file_size_mb": 261.78999519348145,
+      "landmarks": 2
+    }
+  },
+  "performance_comparison": {
+    "speed_comparison": {
+      "combined_model_ms": 30.37884831428528,
+      "p1p2_model_ms": 22.939205169677734,
+      "speed_ratio": 1.324320005404619,
+      "combined_slower_by_ms": 7.439643144607544,
+      "combined_slower_by_pct": 32.432000540461885
+    },
+    "size_comparison": {
+      "combined_model_mb": 57.54622459411621,
+      "p1p2_model_mb": 261.78999519348145,
+      "size_ratio": 0.21981827285487154,
+      "combined_larger_by_mb": -204.24377059936523,
+      "combined_larger_by_pct": -78.01817271451284
+    },
+    "efficiency_metrics": {
+      "combined_ms_per_landmark": 0.9799628488479122,
+      "p1p2_ms_per_landmark": 11.469602584838867,
+      "combined_mb_per_landmark": 1.856329825616652,
+      "p1p2_mb_per_landmark": 130.89499759674072
+    }
+  }
+}

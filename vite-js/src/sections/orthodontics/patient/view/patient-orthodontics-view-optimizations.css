@@ -1,0 +1,86 @@
+/* Performance Optimizations for Patient Orthodontics View */
+
+/* Optimize animated elements */
+[data-framer-component] {
+  will-change: transform, opacity;
+  contain: layout style paint;
+}
+
+/* Optimize chart container */
+.chart-container {
+  will-change: transform;
+  contain: layout style paint;
+  transform: translateZ(0);
+}
+
+/* Optimize image list */
+.image-list-container {
+  contain: layout style;
+}
+
+.image-list-item {
+  contain: layout style paint;
+  will-change: transform;
+}
+
+/* Optimize table */
+.cephalometric-table {
+  contain: layout style;
+}
+
+.table-row {
+  contain: layout style;
+}
+
+/* Optimize dialog content */
+.dialog-content {
+  contain: layout style;
+  will-change: contents;
+}
+
+/* Optimize upload areas */
+.upload-area {
+  contain: layout style;
+}
+
+/* Optimize tab content */
+.tab-content {
+  contain: layout style paint;
+  will-change: contents;
+}
+
+/* Tab transition animations for smooth switching */
+.tab-content-container {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  contain: layout style paint;
+  will-change: contents;
+}
+
+.tab-content {
+  /* Remove transitions for instant switching - using CSS display instead */
+  contain: layout style paint;
+  /* Optimize for faster rendering */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.tab-content.active {
+  /* Active tab - no special styling needed, display handles visibility */
+}
+
+/* Optimize images */
+
+/* Reduce repaints for static elements */
+.static-content {
+  contain: strict;
+}
+
+/* Optimize scrollable areas */
+.scrollable-area {
+  contain: layout style;
+  overflow-anchor: none;
+}
+
+

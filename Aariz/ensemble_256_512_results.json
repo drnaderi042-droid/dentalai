@@ -1,0 +1,28 @@
+{
+  "test_image_id": "cks2ip8fq29yq0yufc4scftj8",
+  "ensemble_strategy": "landmark-specific_selection",
+  "metrics": {
+    "256x256": {
+      "mre_mm": 1.8642456188292158,
+      "median_mm": 1.4779112901799096,
+      "std_mm": 1.4848327389698988,
+      "sdr_2mm": 72.41379310344827
+    },
+    "512x512": {
+      "mre_mm": 1.5788390550604687,
+      "median_mm": 1.18559180022578,
+      "std_mm": 1.5477972696896534,
+      "sdr_2mm": 75.86206896551724
+    },
+    "ensemble": {
+      "mre_mm": 1.6020042818257219,
+      "median_mm": 1.1914594009925692,
+      "std_mm": 1.6002951242907593,
+      "sdr_2mm": 79.3103448275862
+    }
+  },
+  "improvement": {
+    "sdr_improvement": 3.448275862068968,
+    "mre_improvement": -0.023165226765253122
+  }
+}

@@ -1,0 +1,17 @@
+canine class I: 1.5
+canine class II 1-2: 1.8
+canine class II 1-4: 1.1
+canine class II 3-4: 1.5
+canine class II full class: 3.0
+canine class III 1-2: 4.0
+canine class III 1-4: 1.0
+canine-class-III-full-class: 1.2
+molar class I: 1.2
+molar class II 1-2: 2.0
+molar class II 1-4: 5.0
+molar class II 3-4: 4.0
+molar class II full class: 1.0
+molar class III 1-2: 1.0
+molar class III 1-4: 1.8
+molar class III 3-4: 1.2
+molar-class-III-full-class: 1.1
