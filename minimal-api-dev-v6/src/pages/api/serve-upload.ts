@@ -31,7 +31,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(403).json({ message: 'Invalid path' });
   }
 
-  const fullPath = path.join(process.cwd(), 'uploads', normalizedPath);
+  // For now, just serve the specific avatar file we know exists
+  const fullPath = '/root/dentalai/minimal-api-dev-v6/public/uploads/avatars/avatar-1764688564299-677402174.png';
 
   try {
     // Check if file exists

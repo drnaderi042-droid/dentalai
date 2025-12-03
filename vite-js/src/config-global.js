@@ -11,10 +11,15 @@ const getServerUrl = () => {
     return import.meta.env.VITE_SERVER_URL;
   }
 
-  // In browser, use the same hostname and port as the frontend
+  // In browser, use the same hostname as the frontend (Next.js handles everything on port 443)
   if (typeof window !== 'undefined') {
     const {protocol} = window.location;
     const {hostname} = window.location;
+    // For HTTPS, don't specify port (Next.js handles SSL termination)
+    if (protocol === 'https:') {
+      return `${protocol}//${hostname}`;
+    }
+    // For HTTP (development), use port 7272
     return `${protocol}//${hostname}:7272`;
   }
 
@@ -31,6 +36,10 @@ const getAiServerUrl = (defaultPort = 5001) => {
     if (typeof window !== 'undefined' && (url.includes('localhost') || url.includes('127.0.0.1'))) {
       const {protocol} = window.location;
       const {hostname} = window.location;
+      // For HTTPS, don't specify port (AI server runs on HTTP internally)
+      if (protocol === 'https:') {
+        return `${protocol}//${hostname}`;
+      }
       // Extract port from URL or use default
       try {
         const urlObj = new URL(url);
@@ -44,14 +53,18 @@ const getAiServerUrl = (defaultPort = 5001) => {
     }
     return url;
   }
-  
-  // In browser, use the same hostname as the frontend with the specified port
+
+  // In browser, use the same hostname as the frontend (AI server runs on HTTP internally)
   if (typeof window !== 'undefined') {
     const {protocol} = window.location;
     const {hostname} = window.location;
+    // For HTTPS, don't specify port (AI server runs on HTTP internally)
+    if (protocol === 'https:') {
+      return `${protocol}//${hostname}`;
+    }
     return `${protocol}//${hostname}:${defaultPort}`;
   }
-  
+
   // Fallback for server-side rendering
   return `http://localhost:${defaultPort}`;
 };

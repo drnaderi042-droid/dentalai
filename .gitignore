@@ -126,6 +126,7 @@ dist
 # Gatsby files
 .cache/
 public
+!minimal-api-dev-v6/public/
 
 # Storybook build outputs
 .out
@@ -223,25 +224,7 @@ temp/
 ehthumbs.db
 Thumbs.db
 
-# Model files
-*.pt
-*.onnx
-*.ckpt
-*.pkl
-*.h5
-*.pb
-*.tflite
 
-# Large data files
-*.zip
-*.tar.gz
-*.rar
-*.7z
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
 
 # Virtual environments
 .venv/

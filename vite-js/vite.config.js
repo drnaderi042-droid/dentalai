@@ -40,8 +40,8 @@ export default defineConfig({
     host: true, // '0.0.0.0' equivalent - allows access from network
     hmr: {
       // تنظیمات HMR برای جلوگیری از خطاهای اتصال
-      // اگر host: true باشد، باید از 'localhost' استفاده کنیم
-      host: 'localhost',
+      // برای دسترسی از شبکه خارجی، از IP سرور استفاده کنیم
+      host: '31.56.233.34',
       port: PORT,
     },
     watch: {

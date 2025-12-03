@@ -117,7 +117,7 @@ import cv2
 import numpy as np
 from PIL import Image
 import time
-from datetime import datetime
+from datetime import datetime as dt
 from typing import Dict, List, Tuple, Optional
 import traceback
 import sys
@@ -145,37 +145,44 @@ except ImportError:
 
 app = Flask(__name__)
 
-# Configure CORS to allow local network access
+# Configure CORS to allow local network access and production domains
 # Use a function to check if origin is allowed (for regex support)
 def is_allowed_origin(origin):
-    """Check if origin is allowed (localhost or local network IPs)
+    """Check if origin is allowed (localhost, local network IPs, or production domains)
     Returns the origin if allowed, None otherwise for flask-cors
     """
     if not origin:
         return None  # Don't allow null origins for security
-    
-    allowed_patterns = [
+
+    allowed_origins = [
+        # Local development
         "http://localhost:3030",
         "http://127.0.0.1:3030",
         "http://localhost:7272",
         "http://127.0.0.1:7272",
+        # Production domains
+        "https://ceph2.bioritalin.ir",
+        "http://ceph2.bioritalin.ir",
     ]
-    
+
     # Check exact matches
-    if origin in allowed_patterns:
+    if origin in allowed_origins:
         return origin
-    
-    # Check local network IPs (192.168.x.x, 10.x.x.x, 172.16-31.x.x)
-    local_network_patterns = [
+
+    # Check local development patterns
+    allowed_patterns = [
+        r"^http://localhost:\d+$",
+        r"^http://127\.0\.0\.1:\d+$",
+        # Local network IPs
         r"^http://192\.168\.\d+\.\d+:(3030|7272)$",
         r"^http://10\.\d+\.\d+\.\d+:(3030|7272)$",
         r"^http://172\.(1[6-9]|2[0-9]|3[0-1])\.\d+\.\d+:(3030|7272)$",
     ]
-    
-    for pattern in local_network_patterns:
+
+    for pattern in allowed_patterns:
         if re.match(pattern, origin):
             return origin
-    
+
     return None
 
 # Configure CORS using allowed origins
@@ -184,13 +191,15 @@ CORS(app,
     resources={
         r"/*": {
             "origins": [
+                # Local development
                 "http://localhost:3030",
                 "http://127.0.0.1:3030",
                 "http://localhost:7272",
                 "http://127.0.0.1:7272",
-                "http://localhost:*",
-                "http://127.0.0.1:*",
-                # Add explicit patterns for local development
+                # Production domains
+                "https://ceph2.bioritalin.ir",
+                "http://ceph2.bioritalin.ir",
+                # Local development patterns
                 r"http://localhost:\d+",
                 r"http://127.0.0.1:\d+",
                 r"http://192\.168\.\d+\.\d+:\d+",
@@ -211,18 +220,24 @@ CORS(app,
 @app.after_request
 def add_cors_headers(response):
     """
-    تضمین اضافه شدن هدرهای CORS روی تمام پاسخ‌ها (شامل preflight OPTIONS)
-    مخصوصاً برای origin `http://localhost:3030`
+    Ensure CORS headers are added to all responses (including preflight OPTIONS)
+    Especially for origins like https://ceph2.bioritalin.ir
     """
     origin = request.headers.get("Origin")
 
     allowed_origins = {
+        # Local development
         "http://localhost:3030",
         "http://127.0.0.1:3030",
+        "http://localhost:7272",
+        "http://127.0.0.1:7272",
+        # Production domains
+        "https://ceph2.bioritalin.ir",
+        "http://ceph2.bioritalin.ir",
     }
 
     if origin in allowed_origins:
-        # برای درخواست‌های با credentials حتماً باید origin دقیق باشد (نمی‌توان * گذاشت)
+        # For requests with credentials, origin must be exact (cannot use *)
         response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Vary"] = "Origin"
         response.headers["Access-Control-Allow-Credentials"] = "true"
@@ -1554,7 +1569,7 @@ def health_check():
     """Health check endpoint"""
     return jsonify({
         'status': 'healthy',
-        'timestamp': datetime.now().isoformat(),
+        'timestamp': dt.now().isoformat(),
         'services': {
             'intra_oral_analysis': yolo_status,
             'aariz_768': aariz_status.get('768', 'not_loaded'),
@@ -3741,17 +3756,117 @@ def root():
 
 if __name__ == '__main__':
     import argparse
+    import ssl
 
     parser = argparse.ArgumentParser(description='Unified AI API Server')
     parser.add_argument('--host', type=str, default='0.0.0.0', help='Host IP to bind server to (default: 0.0.0.0)')
     parser.add_argument('--port', type=int, default=5001, help='Port to run server on (default: 5001)')
+    parser.add_argument('--ssl', action='store_true', help='Enable HTTPS with self-signed certificate')
+    parser.add_argument('--cert', type=str, help='Path to SSL certificate file')
+    parser.add_argument('--key', type=str, help='Path to SSL private key file')
     args = parser.parse_args()
 
     print("=" * 80)
     print("Unified AI API Server")
     print("=" * 80)
-    print(f"Starting server on http://{args.host}:{args.port} (accessible from network)")
-    print(f"Local access: http://localhost:{args.port}")
+
+    # SSL Configuration
+    ssl_context = None
+    if True:
+        try:
+            if args.cert and args.key:
+                # Use provided certificate and key
+                ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+                ssl_context.load_cert_chain(args.cert, args.key)
+                print("✅ Using provided SSL certificate and key")
+            else:
+                # Generate self-signed certificate for development
+                from cryptography import x509
+                from cryptography.x509.oid import NameOID
+                from cryptography.hazmat.primitives import hashes, serialization
+                from cryptography.hazmat.primitives.asymmetric import rsa
+                import datetime
+
+                # Generate private key
+                private_key = rsa.generate_private_key(
+                    public_exponent=65537,
+                    key_size=2048,
+                )
+
+                # Generate certificate
+                subject = issuer = x509.Name([
+                    x509.NameAttribute(NameOID.COUNTRY_NAME, "IR"),
+                    x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "Tehran"),
+                    x509.NameAttribute(NameOID.LOCALITY_NAME, "Tehran"),
+                    x509.NameAttribute(NameOID.ORGANIZATION_NAME, "Bioritalin"),
+                    x509.NameAttribute(NameOID.COMMON_NAME, "ceph2.bioritalin.ir"),
+                ])
+
+                cert = x509.CertificateBuilder().subject_name(
+                    subject
+                ).issuer_name(
+                    issuer
+                ).public_key(
+                    private_key.public_key()
+                ).serial_number(
+                    x509.random_serial_number()
+                ).not_valid_before(
+                    datetime.datetime.utcnow()
+                ).not_valid_after(
+                    datetime.datetime.utcnow() + datetime.timedelta(days=365)
+                ).add_extension(
+                    x509.SubjectAlternativeName([
+                        x509.DNSName("ceph2.bioritalin.ir"),
+                        x509.DNSName("localhost"),
+                        x509.DNSName("127.0.0.1"),
+                    ]),
+                    critical=False,
+                ).sign(private_key, hashes.SHA256())
+
+                # Write certificate and key to temporary files
+                import tempfile
+                import os
+
+                cert_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pem')
+                key_file = tempfile.NamedTemporaryFile(delete=False, suffix='.key')
+
+                cert_file.write(cert.public_bytes(serialization.Encoding.PEM))
+                cert_file.close()
+
+                key_file.write(private_key.private_bytes(
+                    encoding=serialization.Encoding.PEM,
+                    format=serialization.PrivateFormat.PKCS8,
+                    encryption_algorithm=serialization.NoEncryption()
+                ))
+                key_file.close()
+
+                # Create SSL context
+                ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+                ssl_context.load_cert_chain(cert_file.name, key_file.name)
+
+                print("✅ Generated self-signed SSL certificate")
+                print(f"   Certificate: {cert_file.name}")
+                print(f"   Key: {key_file.name}")
+                print("⚠️  WARNING: Using self-signed certificate - browsers will show security warning")
+                print("   For production, use a proper SSL certificate from a trusted CA")
+
+                # Store temp file paths for cleanup
+                os.environ['SSL_CERT_FILE'] = cert_file.name
+                os.environ['SSL_KEY_FILE'] = key_file.name
+
+        except ImportError:
+            print("❌ SSL enabled but cryptography library not installed")
+            print("   Install with: pip install cryptography")
+            print("   Falling back to HTTP...")
+            ssl_context = None
+        except Exception as e:
+            print(f"❌ Error setting up SSL: {e}")
+            print("   Falling back to HTTP...")
+            ssl_context = None
+
+    protocol = "https" if ssl_context else "http"
+    print(f"Starting server on {protocol}://{args.host}:{args.port} (accessible from network)")
+    print(f"Local access: {protocol}://localhost:{args.port}")
     print("\nAvailable endpoints:")
     print("  GET  /health                    - Health check")
     print("  POST /predict                   - Detect teeth in intra-oral images (YOLOv8)")
@@ -3761,6 +3876,10 @@ if __name__ == '__main__':
     print("=" * 80)
     print("\n📝 Note: Aariz models will be loaded on first request (lazy loading)")
     print("📝 Note: CLdetection2023 model will be loaded on first request (lazy loading)")
+    if ssl_context:
+        print("🔒 SSL/TLS enabled - Server is running with HTTPS")
+    else:
+        print("🔓 SSL/TLS disabled - Server is running with HTTP")
     print("=" * 80)
-    
-    app.run(host=args.host, port=args.port, debug=False, use_reloader=False)
+
+    app.run(host=args.host, port=args.port, debug=False, use_reloader=False, ssl_context=ssl_context)

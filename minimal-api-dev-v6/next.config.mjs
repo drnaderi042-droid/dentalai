@@ -41,15 +41,22 @@ const nextConfig = {
     return config;
   },
 
+  // Disable default Next.js pages - serve static index.html for all non-API routes
   async rewrites() {
     return [
       {
-        source: '/uploads/:path*',
-        destination: process.env.NODE_ENV === 'production'
-          ? '/api/serve-upload?path=:path*'
-          : '/api/serve-upload?path=:path*',
+        source: '/((?!api/).*)',
+        destination: '/index.html',
       },
     ];
+  },
+
+  // Disable Next.js pages and use only static files
+  trailingSlash: true,
+  exportPathMap: async function() {
+    return {
+      '/': { page: '/' }
+    };
   },
 };
 

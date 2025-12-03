@@ -1403,7 +1403,7 @@ export function CephalometricAIAnalysis({
       // Try ML model first (heatmap-based, < 10px accuracy)
       // Use unified AI API server endpoint
       
-      const apiUrl = getAiServiceUrl('/detect-p1p2');
+      const apiUrl = `${CONFIG.site.serverUrl}/api/detect-p1p2`;
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -4429,9 +4429,9 @@ export function CephalometricAIAnalysis({
 
       let endpoint;
       if (isLocalModel && selectedModel.startsWith('local/aariz')) {
-        endpoint = getAiServiceUrl('/detect');
+        endpoint = `${CONFIG.site.serverUrl}/api/detect`;
         if (selectedModel === 'local/aariz-768') {
-          endpoint = getAiServiceUrl('/detect-768');
+          endpoint = `${CONFIG.site.serverUrl}/api/detect`;
         }
       } else if (isLocalModel && selectedModel === 'local/cldetection2023') {
         endpoint = getAiServiceUrl('/detect-cldetection2023');
@@ -5489,4 +5489,3 @@ export const MemoizedCephalometricAIAnalysis = memo(CephalometricAIAnalysis, (pr
   // Props haven't changed significantly, skip re-render
   return true;
 });
-

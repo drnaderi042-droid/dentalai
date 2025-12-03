@@ -40,6 +40,11 @@ const cors = initMiddleware(
         }
       }
       
+      // Allow the server IP
+      if (origin.startsWith('http://31.56.233.34:')) {
+        return callback(null, true);
+      }
+
       // In production, you might want to restrict to specific domains
       // For now, allow all in development
       if (process.env.NODE_ENV !== 'production') {

@@ -10,25 +10,28 @@ const getServerUrl = () => {
   if (CONFIG.site.serverUrl && CONFIG.site.serverUrl !== '') {
     // Check if it's a relative URL or contains localhost
     if (CONFIG.site.serverUrl.includes('localhost') || CONFIG.site.serverUrl.includes('127.0.0.1')) {
-      // In browser, replace localhost with current hostname
+      // In browser, use the current domain (nginx handles proxying)
       if (typeof window !== 'undefined') {
         const {protocol} = window.location;
         const {hostname} = window.location;
-        // Backend runs on port 7272
-        return `${protocol}//${hostname}:7272`;
+        return `${protocol}//${hostname}`;
       }
     }
     return CONFIG.site.serverUrl;
   }
-  
-  // In browser, use the same hostname as the frontend
+
+  // In browser, use the same hostname as the frontend (nginx handles proxying)
   if (typeof window !== 'undefined') {
     const {protocol} = window.location;
     const {hostname} = window.location;
-    // Backend runs on port 7272
+    // For HTTPS, don't specify port (nginx handles SSL termination)
+    if (protocol === 'https:') {
+      return `${protocol}//${hostname}`;
+    }
+    // For HTTP (development), use port 7272
     return `${protocol}//${hostname}:7272`;
   }
-  
+
   // Fallback
   return 'http://localhost:7272';
 };

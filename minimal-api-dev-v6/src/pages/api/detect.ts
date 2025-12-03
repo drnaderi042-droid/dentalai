@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Get service URL from environment or use default
-    const serviceUrl = process.env.CEPHX_SERVICE_URL || 'http://localhost:5000';
+    const serviceUrl = process.env.CEPHX_SERVICE_URL || 'http://localhost:5001';
 
     console.log('[Detect] Proxying request to:', `${serviceUrl}/detect`);
     console.log('[Detect] Has image_url:', !!image_url);
@@ -128,11 +128,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 }
-
-
-
-
-
-
-
-

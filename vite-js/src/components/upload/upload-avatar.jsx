@@ -4,8 +4,8 @@ import { useDropzone } from 'react-dropzone';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import { CONFIG } from 'src/config-global';
 import { varAlpha } from 'src/theme/styles';
+import { getAvatarUrl } from 'src/utils/avatar-url';
 
 import { Image } from '../image';
 import { Iconify } from '../iconify';
@@ -29,18 +29,8 @@ export function UploadAvatar({ sx, error, value, disabled, helperText, ...other 
 
   useEffect(() => {
     if (typeof value === 'string' && value) {
-      // If it's a relative URL (starts with /), prepend server URL
-      if (value.startsWith('/')) {
-        const serverUrl = CONFIG.site.serverUrl || 'http://localhost:7272';
-        setPreview(`${serverUrl}${value}`);
-      } else if (value.startsWith('http://') || value.startsWith('https://')) {
-        // Full URL
-        setPreview(value);
-      } else {
-        // Relative path without leading slash
-        const serverUrl = CONFIG.site.serverUrl || 'http://localhost:7272';
-        setPreview(`${serverUrl}/${value}`);
-      }
+      // Use the getAvatarUrl utility to construct proper URLs
+      setPreview(getAvatarUrl(value));
     } else if (value instanceof File) {
       const objectUrl = URL.createObjectURL(value);
       setPreview(objectUrl);

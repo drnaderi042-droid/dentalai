@@ -7,21 +7,24 @@ import { CONFIG } from 'src/config-global';
  */
 export function getAvatarUrl(avatarUrl) {
   if (!avatarUrl) return null;
-  
+
   // If it's already a full URL, return as is
   if (avatarUrl.startsWith('http://') || avatarUrl.startsWith('https://')) {
     return avatarUrl;
   }
-  
-  // If it's a relative path, prepend server URL
+
+  // For uploads, use HTTPS domain - proxied through nginx
+  if (avatarUrl.startsWith('/uploads/') || avatarUrl.includes('/uploads/')) {
+    return `https://ceph2.bioritalin.ir${avatarUrl.startsWith('/') ? avatarUrl : `/${avatarUrl}`}`;
+  }
+
+  // For other relative paths, use backend server URL
   if (avatarUrl.startsWith('/')) {
     const serverUrl = CONFIG.site.serverUrl || 'http://localhost:7272';
     return `${serverUrl}${avatarUrl}`;
   }
-  
+
   // If it's a path without leading slash
   const serverUrl = CONFIG.site.serverUrl || 'http://localhost:7272';
   return `${serverUrl}/${avatarUrl}`;
 }
-
-
