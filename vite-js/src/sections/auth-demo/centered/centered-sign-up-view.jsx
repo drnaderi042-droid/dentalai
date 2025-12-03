@@ -19,6 +19,7 @@ import { Iconify } from 'src/components/iconify';
 import { AnimateLogo2 } from 'src/components/animate';
 import { Form, Field } from 'src/components/hook-form';
 
+import axios, { endpoints } from 'src/utils/axios';
 import { useAuthContext } from 'src/auth/hooks';
 
 // ----------------------------------------------------------------------
@@ -69,23 +70,17 @@ export function CenteredSignUpView() {
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
-    // Set default role as PATIENT since role field is removed
-    const registrationData = { ...data, role: 'PATIENT' };
+    // Set default role as DOCTOR for medical professionals
+    const registrationData = {
+      email: data.email,
+      password: data.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      role: 'DOCTOR' // Changed to DOCTOR for medical professionals
+    };
 
     try {
-      const response = await fetch('http://localhost:7272/api/auth/sign-up', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(registrationData),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Registration failed');
-      }
+      await axios.post(endpoints.auth.signUp, registrationData);
 
       // Auto-login after successful registration
       await login?.(data.email, data.password);
@@ -94,8 +89,9 @@ export function CenteredSignUpView() {
       navigate(paths.dashboard.root);
     } catch (error) {
       console.error('Registration error:', error);
-      // You might want to show an error message to the user here
-      alert(`خطا در ثبت نام: ${error.message}`);
+      // Show user-friendly error message
+      const errorMessage = error.message || 'خطا در ثبت نام. لطفاً دوباره تلاش کنید.';
+      alert(`خطا در ثبت نام: ${errorMessage}`);
     }
   });
 
