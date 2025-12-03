@@ -23,56 +23,56 @@
   src: url('/fonts/YekanBakhFaNum-Thin.woff2') format('woff2');
   font-weight: 100;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Yekan Bakh';
   src: url('/fonts/YekanBakhFaNum-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Yekan Bakh';
   src: url('/fonts/YekanBakhFaNum-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Yekan Bakh';
   src: url('/fonts/YekanBakhFaNum-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Yekan Bakh';
   src: url('/fonts/YekanBakhFaNum-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Yekan Bakh';
   src: url('/fonts/YekanBakhFaNum-ExtraBold.woff2') format('woff2');
   font-weight: 800;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Yekan Bakh';
   src: url('/fonts/YekanBakhFaNum-Black.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Yekan Bakh';
   src: url('/fonts/YekanBakhFaNum-ExtraBlack.woff2') format('woff2');
   font-weight: 950;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 
 /* Dana Font */
@@ -81,70 +81,70 @@
   src: url('/fonts/Dana/Dana-Thin.woff2') format('woff2');
   font-weight: 100;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Dana';
   src: url('/fonts/Dana/Dana-UltraLight.woff2') format('woff2');
   font-weight: 200;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Dana';
   src: url('/fonts/Dana/Dana-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Dana';
   src: url('/fonts/Dana/Dana-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Dana';
   src: url('/fonts/Dana/Dana-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Dana';
   src: url('/fonts/Dana/Dana-DemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Dana';
   src: url('/fonts/Dana/Dana-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Dana';
   src: url('/fonts/Dana/Dana-ExtraBold.woff2') format('woff2');
   font-weight: 800;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Dana';
   src: url('/fonts/Dana/Dana-Black.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Dana';
   src: url('/fonts/Dana/Dana-ExtraBlack.woff2') format('woff2');
   font-weight: 950;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 
 /* Kalameh Font */
@@ -153,63 +153,63 @@
   src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Thin.woff2') format('woff2');
   font-weight: 100;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Kalameh';
   src: url('/fonts/Kalameh/KalamehWeb(FaNum)-ExtraLight.woff2') format('woff2');
   font-weight: 200;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Kalameh';
   src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Kalameh';
   src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Kalameh';
   src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Kalameh';
   src: url('/fonts/Kalameh/KalamehWeb(FaNum)-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Kalameh';
   src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Kalameh';
   src: url('/fonts/Kalameh/KalamehWeb(FaNum)-ExtraBold.woff2') format('woff2');
   font-weight: 800;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 @font-face {
   font-family: 'Kalameh';
   src: url('/fonts/Kalameh/KalamehWeb(FaNum)-Black.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
-  font-display: swap;
+  font-display: fallback;
 }
 
 /** **************************************
