@@ -62,7 +62,7 @@ export function HomeHero({ sx, ...other }) {
         }}
       >
         <Box component="span" sx={{ width: 1, opacity: 0.24 }}>
-          با ارزش ترین داراییت
+          از تصویر تا تشخیص: همه‌چیز با یک
         </Box>
         
         <Box
@@ -87,9 +87,8 @@ export function HomeHero({ sx, ...other }) {
             ml: { xs: 0.75, md: 1, xl: 1.5 },
           }}
         >
-          زمانت
+          کلیک
         </Box>
-        هست
       </Box>
     </MInview>
   );
