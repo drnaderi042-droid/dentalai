@@ -40,7 +40,7 @@ export function HomeForDesigner({ sx, ...other }) {
 
           <SectionTitle
             title="برای حرفه ای ها"
-            description="از تصویر تا تشخیص: همه‌چیز با یک کلیک"
+            description="بسپرش به AI"
             sx={{
               zIndex: 1,
               textAlign: 'center',

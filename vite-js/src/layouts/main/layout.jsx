@@ -49,6 +49,7 @@ export function MainLayout({ sx, data, children }) {
               localization: false,
               notifications: false,
               wallet: false,
+              purchase: false,
             }}
             slots={{
               topArea: (

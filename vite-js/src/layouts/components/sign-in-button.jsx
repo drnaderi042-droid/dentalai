@@ -15,7 +15,7 @@ export function SignInButton({ sx, ...other }) {
       sx={sx}
       {...other}
     >
-      ورود
+      داشبورد
     </Button>
   );
 }
