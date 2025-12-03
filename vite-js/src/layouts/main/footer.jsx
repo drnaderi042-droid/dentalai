@@ -158,7 +158,7 @@ export function HomeFooter({ sx }) {
       <Container>
         <Logo />
         <Box sx={{ mt: 1, typography: 'caption' }}>
-           توسعه داده شده در بینابین مولکول های دوپامین
+           Stay inspired. Keep building ❤️
         </Box>
       </Container>
     </Box>
