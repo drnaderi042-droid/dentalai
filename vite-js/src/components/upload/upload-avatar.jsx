@@ -4,8 +4,9 @@ import { useDropzone } from 'react-dropzone';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import { varAlpha } from 'src/theme/styles';
 import { getAvatarUrl } from 'src/utils/avatar-url';
+
+import { varAlpha } from 'src/theme/styles';
 
 import { Image } from '../image';
 import { Iconify } from '../iconify';
