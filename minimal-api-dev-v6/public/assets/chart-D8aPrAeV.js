@@ -1,0 +1,1 @@
+import{j as r,B as n}from"./index-BSItzkt3.js";import{_ as d}from"./chart-legends-C2zjVOvD.js";function l({sx:t,type:i,series:o,height:s,options:e,width:a="100%",...x}){return r.jsx(n,{dir:"ltr",sx:{width:a,height:s,flexShrink:0,borderRadius:1.5,position:"relative",...t},...x,children:r.jsx(d,{type:i,series:o,options:e,width:"100%",height:"100%"})})}export{l as C};

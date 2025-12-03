@@ -1,0 +1,1 @@
+import{r}from"./index-BSItzkt3.js";function n({click:t,doubleClick:l,timeout:o=250}){const e=r.useRef(null),a=r.useCallback(()=>{e.current&&(clearTimeout(e.current),e.current=null)},[]),c=r.useCallback(u=>{a(),t&&u.detail===1&&(e.current=setTimeout(()=>{t(u)},o)),u.detail%2===0&&l(u)},[t,l,o,a]);return r.useMemo(()=>c,[c])}export{n as u};

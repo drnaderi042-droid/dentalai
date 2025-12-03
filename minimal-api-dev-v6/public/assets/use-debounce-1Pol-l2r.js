@@ -1,0 +1,1 @@
+import{r as e}from"./index-BH9ijvcg.js";function m(o,t=500){const[u,s]=e.useState(o),n=e.useCallback(()=>{const c=setTimeout(()=>{s(o)},t);return()=>{clearTimeout(c)}},[o,t]);return e.useEffect(()=>{n()},[n]),e.useMemo(()=>u,[u])}export{m as u};

@@ -1,0 +1,1 @@
+import{j as r,e5 as s,T as t,B as i,v as n}from"./index-BSItzkt3.js";function d({title:e="Blank"}){return r.jsxs(s,{maxWidth:"xl",children:[r.jsxs(t,{variant:"h4",children:[" ",e," "]}),r.jsx(i,{sx:{mt:5,width:1,height:320,borderRadius:2,bgcolor:a=>n(a.vars.palette.grey["500Channel"],.04),border:a=>`dashed 1px ${a.vars.palette.divider}`}})]})}export{d as B};

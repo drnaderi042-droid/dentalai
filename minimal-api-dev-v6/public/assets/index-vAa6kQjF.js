@@ -1,0 +1,1 @@
+import{j as t,H as e,C as s}from"./index-BH9ijvcg.js";import{P as a}from"./payment-view-K6fjLRlL.js";import"./index-DVaqB1VX.js";import"./Card-CwEGl0A2.js";const i={title:`Payment - ${s.site.name}`};function l(){return t.jsxs(t.Fragment,{children:[t.jsx(e,{children:t.jsxs("title",{children:[" ",i.title]})}),t.jsx(a,{})]})}export{l as default};

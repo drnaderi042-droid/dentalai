@@ -1,0 +1,1 @@
+import{C as s}from"./index-BH9ijvcg.js";function h(t){return t?t.startsWith("http://")||t.startsWith("https://")?t:t.startsWith("/uploads/")||t.includes("/uploads/")?`https://ceph2.bioritalin.ir${t.startsWith("/")?t:`/${t}`}`:t.startsWith("/")?`${s.site.serverUrl||"http://localhost:7272"}${t}`:`${s.site.serverUrl||"http://localhost:7272"}/${t}`:null}export{h as g};
