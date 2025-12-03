@@ -50,7 +50,7 @@ export const Image = forwardRef(
       wrapperProps,
       scrollPosition,
       effect = 'blur',
-      visibleByDefault,
+      visibleByDefault = true, // Disable lazy loading by default to prevent layout shift
       wrapperClassName,
       useIntersectionObserver,
       //
